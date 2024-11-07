@@ -43,32 +43,10 @@ public class TestWebShoppingSite {
     public void test() {
         // Add your test code here
         driver.get("https://magento.softwaretestingboard.com/");
-//        driver.findElement(AppiumBy.xpath("//*[@class='action nav-toggle']")).click();
-//        driver.findElement(AppiumBy.xpath("//*[@class='level0 nav-3 category-item level-top parent ui-menu-item']")).click();
-//        driver.findElement(AppiumBy.xpath("//*[@class='level2 nav-3-1-1 category-item first ui-menu-item']")).click();
-//        driver.executeScript("arguments[0].scrollIntoView(true);", driver.findElement(AppiumBy.xpath("//*[@class='page-title']/span")));
-//        driver.findElement(AppiumBy.xpath("//div[@class='products wrapper grid products-grid']//*[@class='item product product-item'][1]")).click();
-//
-//        String name_product = driver.findElement(AppiumBy.xpath("//*[@class='page-title']/span")).getText();
-//        String size_product = "M";
-//        String color_product = "Black";
-//        String number_product = "1";
-//
-//        //Add item to cart
-//        WebElement imageItem =   driver.findElement(AppiumBy.xpath("//*[@class='fotorama__stage__frame fotorama__active fotorama_vertical_ratio fotorama__loaded fotorama__loaded--img']"));
-//        driver.executeScript("arguments[0].scrollIntoView(true);", imageItem);
-//
-//        driver.findElement(AppiumBy.xpath("//*[@class='swatch-option text'][contains(., '"+size_product+"')]")).click();
-//        driver.findElement(AppiumBy.xpath("//*[@option-label='"+color_product+"']")).click();
-//        driver.findElement(AppiumBy.cssSelector("input[type='number']")).clear();
-//        driver.findElement(AppiumBy.cssSelector("input[type='number']")).sendKeys(number_product);
-//        //add item into list product array
-//        listProducts.add(new Product(name_product, size_product, color_product, number_product));
-//        //scroll to view and click addToCartButton
-//        WebElement addToCartButton =   driver.findElement(AppiumBy.xpath("//*[@class='action primary tocart']"));
-//        driver.executeScript("arguments[0].scrollIntoView(true);", driver.findElement(AppiumBy.xpath("//*[@class='page-title']/span")));
-//        addToCartButton.click();
+
         addItemToCard("Men","Jackets","M","Black","1");
+        addItemToCard("Women","Jackets","M","Black","1");
+        addItemToCard("Gear","Bags","null","null","1");
         //scroll to view and click myCartButton
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
         WebElement messageGlobal = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@class='message global demo']")));
@@ -90,6 +68,7 @@ public class TestWebShoppingSite {
         WebElement messageGlobal = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@class='message global demo']")));
         driver.executeScript("arguments[0].scrollIntoView(true);", messageGlobal);
 
+        //click on category
         driver.findElement(AppiumBy.xpath("//*[@class='action nav-toggle']")).click();
         driver.findElement(AppiumBy.xpath("//*[@class='navigation']//span[contains(.,'"+typeCategory+"')]")).click();
         driver.findElement(AppiumBy.xpath("//*[@class='navigation']//li[contains(.,'" + typeCategory + "')]//span[contains(.,'" + typeItem + "')]")).click();
@@ -112,7 +91,7 @@ public class TestWebShoppingSite {
         }
         //add item into list product array
         String nameProduct = driver.findElement(AppiumBy.xpath("//*[@class='page-title']/span")).getText();
-        listProducts.add(new Product(nameProduct, sizeProduct, colorProduct, numberProduct));
+        listProducts.add(new Product(nameProduct, sizeProduct, colorProduct, numberProduct, typeCategory));
         //scroll to view and click addToCartButton
         WebElement addToCartButton =   driver.findElement(AppiumBy.xpath("//*[@class='action primary tocart']"));
         driver.executeScript("arguments[0].scrollIntoView(true);", driver.findElement(AppiumBy.xpath("//*[@class='page-title']/span")));
@@ -131,8 +110,10 @@ public class TestWebShoppingSite {
             boolean isFound = false;
            for (WebElement productItem : productItems) {
                String name_product = productItem.findElement(By.xpath("//div[@class='product-item-details']//strong[@class='product-item-name']/a")).getText();
-               String size_product = productItem.findElement(By.xpath("//div[@class='product-item-details']//dl[@class='item-options']/dt[1]")).getText();
-               String color_product = productItem.findElement(By.xpath("//div[@class='product-item-details']//dl[@class='item-options']/dt[2]")).getText();
+               String size_product = product.getTypeCategory().equals("Gear")
+                                     ? "null" : productItem.findElement(By.xpath("//div[@class='product-item-details']//dl[@class='item-options']/dt[1]")).getText();
+               String color_product = product.getTypeCategory().equals("Gear")
+                                     ? "null" : productItem.findElement(By.xpath("//div[@class='product-item-details']//dl[@class='item-options']/dt[2]")).getText();
                String quantity_product = productItem.findElement(By.xpath("//div[@class='control qty']//input")).getText();
                if (name_product.equals(product.getNameProduct())){
                    Assert.assertEquals(size_product, product.getSize() );

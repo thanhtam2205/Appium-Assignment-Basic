@@ -6,11 +6,14 @@ public class Product {
     private String color;
     private String quantity;
 
-    public Product(String nameProduct, String size, String color, String quantity) {
+    private String typeCategory;
+
+    public Product(String nameProduct, String size, String color, String quantity , String typeCategory) {
         this.nameProduct = nameProduct;
         this.size = size;
         this.color = color;
         this.quantity = quantity;
+        this.typeCategory = typeCategory;
     }
 
     // Getters and setters
@@ -44,5 +47,13 @@ public class Product {
 
     public void setQuantity(String quantity) {
         this.quantity = quantity;
+    }
+
+    public String getTypeCategory() {
+        return typeCategory;
+    }
+
+    public void setTypeCategory(String typeCategory) {
+        this.typeCategory = typeCategory;
     }
 }
